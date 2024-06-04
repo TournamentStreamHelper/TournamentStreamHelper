@@ -14,6 +14,8 @@ from loguru import logger
 from server import settings
 from server.api import router_v1
 
+from pathlib import Path
+
 program_context = {
     "name": "TournamentStreamHelper",
     "version": "?",
@@ -40,6 +42,7 @@ async def lifespan(app: FastAPI):
     yield
     await on_shutdown(app)
 
+Path("./dist/assets").mkdir(parents=True, exist_ok=True)
 app = FastAPI(lifespan=lifespan)
 app.socketio = AsyncServer(async_mode='asgi')
 templates = Jinja2Templates(directory='./dist')
